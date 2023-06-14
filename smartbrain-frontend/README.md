@@ -1,0 +1,1 @@
+SMARTBRAIN REACT APP is a react app made with a fully functioning server and database, Node.js is used for the server and PostgreSQL is used as the database. Post an image URL in the search field and see what happpens! The face-recognition API will recognize a face if it is inside the picture. There is also a register and sign up section connected to the database
