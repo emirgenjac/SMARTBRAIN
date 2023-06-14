@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/SMARTBRAIN/static/css/main.6775cc19.css",
+    "main.js": "/SMARTBRAIN/static/js/main.27a30df3.js",
+    "static/media/axios.cjs": "/SMARTBRAIN/static/media/axios.e7d77f0967a69d31d7fc.cjs",
+    "index.html": "/SMARTBRAIN/index.html",
+    "main.6775cc19.css.map": "/SMARTBRAIN/static/css/main.6775cc19.css.map",
+    "main.27a30df3.js.map": "/SMARTBRAIN/static/js/main.27a30df3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6775cc19.css",
+    "static/js/main.27a30df3.js"
+  ]
+}
