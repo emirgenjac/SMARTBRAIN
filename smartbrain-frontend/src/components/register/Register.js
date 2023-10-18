@@ -25,7 +25,7 @@ class Register extends Component {
     onSubmitSignIn = () => {
         const { onRouteChange, loadUser } = this.props
         const { email, name, password } = this.state
-        fetch('http://localhost:3000/register', {
+        fetch('https://smart-brain-c2l1.onrender.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
