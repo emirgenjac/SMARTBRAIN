@@ -12,9 +12,9 @@ const db = knex({
     client: 'pg',
     connection: {
         host: 'dpg-cko3l161101c73djm1g0-a',
-        user: 'postgres',
-        password: 'test',
-        database: 'smartbrain'
+        user: 'g3njac',
+        password: 'EAMccDWiGeFRhUDpDlISiAqHiHKWQiaH',
+        database: 'smartbrain_mm96'
     }
 });
 
