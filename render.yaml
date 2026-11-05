@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: smartbrain-api
+    runtime: node
+    rootDir: smartbrain-backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+  - type: web
+    name: smartbrain
+    runtime: static
+    rootDir: smartbrain-frontend
+    buildCommand: npm install && CI=false npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false
