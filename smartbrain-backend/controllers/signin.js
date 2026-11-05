@@ -1,27 +1,46 @@
+const crypto = require('crypto');
+const normalizeUser = require('./normalizeUser');
+const { setAuthCookie } = require('./auth');
+const { validateSignin } = require('./validate');
+
+const DUMMY_HASH = require('bcryptjs').hashSync(crypto.randomBytes(16).toString('hex'), 12);
+
 const handleSignin = (req, res, db, bcrypt) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json('incorrect form submission')
-    }
-    db.select('email', 'hash').from('login')
-    .where('email', '=', req.body.email)
-    .then(data => {
-       const isValid = bcrypt.compareSync(password, data[0].hash)
-       if (isValid) {
-        return db.select('*').from('users')
-            .where('email', '=', email)
-            .then(user => {
-                res.json(user[0])
-            })
-            .catch(err => res.status(400).json('unable to get user'))
-       } else {
-           res.status(400).json('wrong credentials');
-           
-        }
+  const parsed = validateSignin(req.body || {});
+  if (parsed.error) {
+    return res.status(400).json(parsed.error);
+  }
+
+  const { email, password } = parsed;
+
+  db.select('email', 'hash')
+    .from('login')
+    .whereRaw('lower(email) = ?', [email])
+    .then((data) => {
+      const hash = data.length ? data[0].hash : DUMMY_HASH;
+      let isValid = false;
+      try {
+        isValid = bcrypt.compareSync(password, hash);
+      } catch (err) {
+        isValid = false;
+      }
+      if (!data.length || !isValid) {
+        return res.status(400).json('wrong credentials');
+      }
+      return db.select('*')
+        .from('users')
+        .whereRaw('lower(email) = ?', [email])
+        .then((user) => {
+          if (!user.length) {
+            return res.status(400).json('wrong credentials');
+          }
+          setAuthCookie(res, user[0].id);
+          res.json(normalizeUser(user[0]));
+        });
     })
-    .catch(err => res.status(400).json('wrong credentials'))
-}
+    .catch(() => res.status(400).json('wrong credentials'));
+};
 
 module.exports = {
-    handleSignin: handleSignin
-}
+  handleSignin
+};

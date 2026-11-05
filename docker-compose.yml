@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: smartbrain
+      POSTGRES_PASSWORD: smartbrain
+      POSTGRES_DB: smartbrain
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - smartbrain_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartbrain -d smartbrain"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  smartbrain_pg:
